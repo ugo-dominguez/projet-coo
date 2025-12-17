@@ -1,0 +1,3 @@
+
+class MedievalThemeFactory extends ThemeFactory {
+}

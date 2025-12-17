@@ -1,0 +1,3 @@
+
+class FuturisticThemeFactory extends ThemeFactory {
+}
