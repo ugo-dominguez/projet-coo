@@ -3,32 +3,25 @@ public class MedievalThemeFactory extends ThemeFactory {
     @Override
     public NPC createRandomEnemy() {
         int roll = Dice.randomInt(1, 100);
-
-        // Checklist:
-        // Chevalier Errant : 30% (1-30)
-        // Sorcière : 25% (31-55)
-        // Vautour : 20% (56-75)
-        // Rat Enragé : 15% (76-90)
-        // Gobelin : 10% (91-100)
-
         NPC npc;
+        
         if (roll <= 30) {
             npc = new NPC("Chevalier Errant", 120, 15, 8, 12, 5, "Coup d'épée");
-            npc.attackStrategy = (attacker, defender) -> attacker.getForce() + Dice.roll(6);
+            npc.attackStrategy = new PhysicalAttack();
         } else if (roll <= 55) {
             npc = new NPC("Sorcière", 70, 5, 10, 8, 20, "Sort de feu");
-            npc.attackStrategy = (attacker, defender) -> attacker.getIntelligence() + 10;
+            npc.attackStrategy = new MagicalAttack();
         } else if (roll <= 75) {
             npc = new NPC("Vautour", 50, 8, 20, 5, 2, "Attaque plongeante");
-            npc.attackStrategy = (attacker, defender) -> attacker.getDexterity() + 2;
+            npc.attackStrategy = new RangedAttack();
         } else if (roll <= 90) {
             npc = new NPC("Rat Enragé", 30, 4, 15, 4, 1, "Morsure infectieuse");
-            npc.attackStrategy = (attacker, defender) -> attacker.getForce() + 2;
+            npc.attackStrategy = new PhysicalAttack();
         } else {
             npc = new NPC("Gobelin", 60, 8, 12, 8, 4, "Coup de dague");
-            npc.attackStrategy = (attacker, defender) -> attacker.getDexterity() + 3;
+            npc.attackStrategy = new CriticalAttack();
         }
-
+        
         return npc;
     }
 
@@ -57,7 +50,7 @@ public class MedievalThemeFactory extends ThemeFactory {
     @Override
     public NPC createBoss() {
         NPC boss = new NPC("Dragon", 300, 25, 10, 20, 15, "Souffle de feu");
-        boss.attackStrategy = (attacker, defender) -> attacker.getIntelligence() + Dice.roll(20);
+        boss.attackStrategy = new MagicalAttack();
         return boss;
     }
 }

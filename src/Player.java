@@ -62,7 +62,8 @@ public abstract class Player extends Character {
     public void consumeItem(Consumable item) {
         item.use(this);
         inventory.remove(item);
-        System.out.println("Consumed " + item.getName());
+        System.out.println("");
+        System.out.println(item.getName() + " consommé !");
     }
 
     public void addEffect(Effect effect) {

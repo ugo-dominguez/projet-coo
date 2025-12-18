@@ -15,6 +15,7 @@ public class Game {
     public void start() {
         System.out.println(ConsoleColors.ANSI_CYAN + "Bienvenue dans le RPG!" + ConsoleColors.ANSI_RESET);
 
+        System.out.println();
         System.out.println("Choisissez un thème :");
         System.out.println("1. Médiéval");
         System.out.println("2. Futuriste");
@@ -26,6 +27,7 @@ public class Game {
             themeFactory = new FuturisticThemeFactory();
         }
 
+        System.out.println();
         System.out.println("Choisissez une classe :");
         System.out.println("1. Barbare (Force élevée)");
         System.out.println("2. Archer (Dextérité élevée)");
@@ -33,6 +35,7 @@ public class Game {
         System.out.println("4. Sorcier (Intelligence élevée)");
         int classChoice = getUserInput(1, 4);
 
+        System.out.println();
         System.out.println("Entrez le nom de votre héros :");
         String name = scanner.next();
 
@@ -58,7 +61,8 @@ public class Game {
 
         dungeon = new Dungeon(themeFactory);
 
-        System.out.println("Le jeu commence !");
+        System.out.println();
+        System.out.println(ConsoleColors.ANSI_PURPLE + "Le jeu commence !" + ConsoleColors.ANSI_RESET);
         gameLoop();
     }
 
@@ -71,28 +75,28 @@ public class Game {
                 player.dexterity = 5;
                 player.constitution = 10;
                 player.intelligence = 2;
-                player.attackStrategy = (attacker, defender) -> attacker.getForce() + 10; // Bonus arme
+                player.attackStrategy = new PhysicalAttack();
                 break;
             case 2: // Archer
                 player.force = 10;
                 player.dexterity = 20;
                 player.constitution = 8;
                 player.intelligence = 5;
-                player.attackStrategy = (attacker, defender) -> attacker.getDexterity() + 8;
+                player.attackStrategy = new RangedAttack();
                 break;
             case 3: // Assassin
                 player.force = 12;
                 player.dexterity = 18;
                 player.constitution = 6;
                 player.intelligence = 8;
-                player.attackStrategy = (attacker, defender) -> attacker.getDexterity() + 12;
+                player.attackStrategy = new CriticalAttack();
                 break;
             case 4: // Sorcier
                 player.force = 4;
                 player.dexterity = 8;
                 player.constitution = 6;
                 player.intelligence = 25;
-                player.attackStrategy = (attacker, defender) -> attacker.getIntelligence() + 15;
+                player.attackStrategy = new MagicalAttack();
                 break;
         }
     }
@@ -131,9 +135,11 @@ public class Game {
         if (choice <= player.inventory.size()) {
             Item item = player.inventory.get(choice - 1);
             if (item instanceof Consumable) {
-                player.consumeItem((Consumable) item);
+                GameAction useItemCommand = new UseItemCommand(player, (Consumable) item);
+                useItemCommand.execute();
             } else if (item instanceof Equipment) {
-                player.equipItem((Equipment) item);
+                GameAction equipCommand = new EquipItemCommand(player, (Equipment) item);
+                equipCommand.execute();
             } else {
                 System.out.println(item.getName() + " ne peut pas être utilisé.");
             }
@@ -164,7 +170,7 @@ public class Game {
     }
 
     private boolean processRoom(Room room) {
-        System.out.println("\n=== Salle " + room.getRoomNumber() + " ===");
+        System.out.println(ConsoleColors.ANSI_YELLOW + "\n=== Salle " + room.getRoomNumber() + " ===" + ConsoleColors.ANSI_RESET);
 
         // Format: "Un Chevalier Errant et 2 Rats Enragés apparaissent !"
         List<NPC> enemies = room.getEnemies();
@@ -204,6 +210,7 @@ public class Game {
         }
 
         while (!enemies.isEmpty()) {
+            System.out.println("");
             System.out.print(ConsoleColors.ANSI_GREEN + "@ " + ConsoleColors.ANSI_RESET); // Player
             for (NPC enemy : enemies) {
                 String color = ConsoleColors.ANSI_RED;
@@ -212,7 +219,7 @@ public class Game {
             for (Item item : items) {
                 System.out.print(ConsoleColors.ANSI_YELLOW + "?" + " " + ConsoleColors.ANSI_RESET);
             }
-            System.out.println();
+            System.out.println("\n");
 
             System.out.println("Que voulez-vous faire ?");
             System.out.println("1. Attaquer un ennemi");
@@ -220,6 +227,7 @@ public class Game {
             System.out.println("3. Afficher l'inventaire");
 
             int action = getUserInput(1, 3);
+            System.out.println("");
             if (action == 1) {
                 System.out.println("Attaquer qui ?");
                 for (int j = 0; j < enemies.size(); j++) {
@@ -229,7 +237,9 @@ public class Game {
                 int enemyIdx = getUserInput(1, enemies.size()) - 1;
                 NPC target = enemies.get(enemyIdx);
 
-                player.attack(target);
+                GameAction attackCommand = new AttackCommand(player, target);
+                attackCommand.execute();
+
                 if (target.getHealth() <= 0) {
                     System.out.println(target.getName() + " est vaincu !");
                     enemies.remove(enemyIdx);
@@ -268,8 +278,10 @@ public class Game {
     }
 
     private void performEnemyAttacks(List<NPC> enemies) {
+        System.out.println("");
         System.out.println(ConsoleColors.ANSI_RED + "Les ennemis ripostent !" + ConsoleColors.ANSI_RESET);
         for (NPC enemy : enemies) {
+            System.out.println("");
             enemy.attack(player);
             if (player.getHealth() <= 0)
                 break;
@@ -288,7 +300,9 @@ public class Game {
 
             int choice = getUserInput(1, 2);
             if (choice == 1) {
-                player.attack(boss);
+                GameAction attackCommand = new AttackCommand(player, boss);
+                attackCommand.execute();
+                
                 if (boss.getHealth() > 0) {
                     boss.attack(player);
                 }

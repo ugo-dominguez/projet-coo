@@ -1,7 +1,8 @@
 
-class PhysicalAttack implements AttackStrategy {
+public class PhysicalAttack implements AttackStrategy {
+    @Override
     public int calculateDamage(Character attacker, Character defender) {
-        return 0;
+        // Attaque physique basée sur la Force
+        return attacker.getForce() + Dice.roll(6);
     }
-
 }

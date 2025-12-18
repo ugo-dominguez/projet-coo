@@ -1,7 +1,8 @@
 
-class MagicalAttack implements AttackStrategy {
+public class MagicalAttack implements AttackStrategy {
+    @Override
     public int calculateDamage(Character attacker, Character defender) {
-        return 0;
+        // Attaque magique basée sur l'Intelligence
+        return attacker.getIntelligence() + Dice.roll(8);
     }
-
 }

@@ -5,16 +5,15 @@ public class FuturisticThemeFactory extends ThemeFactory {
         int roll = Dice.randomInt(1, 100);
         NPC npc;
 
-        // Futuristic Enemies
         if (roll <= 40) {
             npc = new NPC("Drone de Combat", 60, 5, 15, 5, 20, "Tir de missile");
-            npc.attackStrategy = (attacker, defender) -> attacker.getDexterity() + 2;
+            npc.attackStrategy = new RangedAttack();
         } else if (roll <= 70) {
             npc = new NPC("Soldat Cybernétique", 100, 12, 10, 10, 5, "Tir Plasma");
-            npc.attackStrategy = (attacker, defender) -> attacker.getDexterity() + 4;
+            npc.attackStrategy = new RangedAttack();
         } else {
             npc = new NPC("Alien Predateur", 80, 18, 15, 8, 2, "Griffes Acérées");
-            npc.attackStrategy = (attacker, defender) -> attacker.getForce() + 5;
+            npc.attackStrategy = new PhysicalAttack();
         }
 
         return npc;
@@ -40,7 +39,7 @@ public class FuturisticThemeFactory extends ThemeFactory {
     @Override
     public NPC createBoss() {
         NPC boss = new NPC("Cyber-Overlord", 250, 30, 20, 30, 30, "Annihilation Laser");
-        boss.attackStrategy = (attacker, defender) -> attacker.getIntelligence() + Dice.roll(10) + 10;
+        boss.attackStrategy = new MagicalAttack();
         return boss;
     }
 }
