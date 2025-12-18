@@ -9,9 +9,8 @@ public abstract class Player extends Character {
         if (attackStrategy != null) {
             int damage = attackStrategy.calculateDamage(this, target);
             target.takeDamage(damage);
-            System.out.println(this.name + " attacks " + target.name + " for " + damage + " damage.");
         } else {
-            System.out.println(this.name + " has no attack strategy!");
+            System.out.println(this.name + "Pas de strategie d'attaque !");
         }
     }
 
@@ -47,6 +46,17 @@ public abstract class Player extends Character {
         this.increaseDexterity(item.getDexterityBonus() * multiplier);
         this.increaseConstitution(item.getConstitutionBonus() * multiplier);
         this.increaseIntelligence(item.getIntelligenceBonus() * multiplier);
+    }
+
+    @Override
+    public void takeDamage(int amount) {
+        int reduction = (this.dexterity + this.constitution) / 4;
+        int damageTaken = Math.max(1, amount - reduction);
+        this.health -= damageTaken;
+        if (this.health < 0) {
+            this.health = 0;
+        }
+        System.out.println(this.name + " subit " + damageTaken + " dégâts (Réduction: " + reduction + ")");
     }
 
     public void consumeItem(Consumable item) {

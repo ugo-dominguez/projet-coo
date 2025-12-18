@@ -82,4 +82,7 @@ public abstract class Character {
         return intelligence;
     }
 
+    public String getName() {
+        return name;
+    }
 }
