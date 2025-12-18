@@ -13,7 +13,7 @@ public class Game {
     }
 
     public void start() {
-        System.out.println(ConsoleColors.ANSI_CYAN + "Bienvenue dans le RPG!" + ConsoleColors.ANSI_RESET);
+        System.out.println(ConsoleColors.ANSI_CYAN + "Bienvenue dans le RPG !" + ConsoleColors.ANSI_RESET);
 
         System.out.println();
         System.out.println("Choisissez un thème :");
@@ -41,20 +41,18 @@ public class Game {
 
         switch (classChoice) {
             case 1:
-                player = new Barbarian();
+                player = new Barbarian(name);
                 break;
             case 2:
-                player = new Archer();
+                player = new Archer(name);
                 break;
             case 3:
-                player = new Assassin();
+                player = new Assassin(name);
                 break;
             case 4:
-                player = new Wizard();
+                player = new Wizard(name);
                 break;
         }
-        player.name = name;
-        initPlayerStats(classChoice);
 
         player.inventory.add(themeFactory.createRandomItem());
         player.inventory.add(themeFactory.createRandomItem());
@@ -64,41 +62,6 @@ public class Game {
         System.out.println();
         System.out.println(ConsoleColors.ANSI_PURPLE + "Le jeu commence !" + ConsoleColors.ANSI_RESET);
         gameLoop();
-    }
-
-    private void initPlayerStats(int classChoice) {
-        player.maxHealth = 100;
-        player.health = 100;
-        switch (classChoice) {
-            case 1: // Barbare
-                player.force = 20;
-                player.dexterity = 5;
-                player.constitution = 10;
-                player.intelligence = 2;
-                player.attackStrategy = new PhysicalAttack();
-                break;
-            case 2: // Archer
-                player.force = 10;
-                player.dexterity = 20;
-                player.constitution = 8;
-                player.intelligence = 5;
-                player.attackStrategy = new RangedAttack();
-                break;
-            case 3: // Assassin
-                player.force = 12;
-                player.dexterity = 18;
-                player.constitution = 6;
-                player.intelligence = 8;
-                player.attackStrategy = new CriticalAttack();
-                break;
-            case 4: // Sorcier
-                player.force = 4;
-                player.dexterity = 8;
-                player.constitution = 6;
-                player.intelligence = 25;
-                player.attackStrategy = new MagicalAttack();
-                break;
-        }
     }
 
     private void gameLoop() {
@@ -216,7 +179,7 @@ public class Game {
                 String color = ConsoleColors.ANSI_RED;
                 System.out.print(color + enemy.getName().charAt(0) + " " + ConsoleColors.ANSI_RESET);
             }
-            for (Item item : items) {
+            for (Item _ : items) {
                 System.out.print(ConsoleColors.ANSI_YELLOW + "?" + " " + ConsoleColors.ANSI_RESET);
             }
             System.out.println("\n");
