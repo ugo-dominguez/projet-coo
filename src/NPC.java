@@ -17,7 +17,14 @@ public class NPC extends Character {
         if (attackStrategy != null) {
             int rawDamage = attackStrategy.calculateDamage(this, target);
             System.out.println(this.name + " utilise " + specialAttackName + " sur " + target.getName() + " !");
-            target.takeDamage(rawDamage);
+
+            // Emit DEAL_DAMAGE
+            java.util.Map<String, Object> data = new java.util.HashMap<>();
+            data.put("damage", rawDamage);
+            data.put("target", target);
+            this.dispatchEvent(new GameEvent(EventType.DEAL_DAMAGE, this, data));
+
+            target.takeDamage(rawDamage, this);
         }
     }
 
@@ -26,9 +33,18 @@ public class NPC extends Character {
     }
 
     @Override
-    public void takeDamage(int amount) {
+    public void takeDamage(int amount, Character attacker) {
         int reduction = this.constitution / 2;
         int damageTaken = Math.max(1, amount - reduction);
+
+        // Emit TAKE_DAMAGE and allow modification
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("damage", damageTaken);
+        data.put("attacker", attacker);
+        this.dispatchEvent(new GameEvent(EventType.TAKE_DAMAGE, this, data));
+
+        damageTaken = (int) data.get("damage");
+
         this.health -= damageTaken;
         if (this.health < 0) {
             this.health = 0;

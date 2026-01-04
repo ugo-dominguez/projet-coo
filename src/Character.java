@@ -8,6 +8,21 @@ public abstract class Character {
     protected int constitution;
     protected int intelligence;
     protected AttackStrategy attackStrategy;
+    protected java.util.List<PassiveSkill> passiveSkills = new java.util.ArrayList<>();
+
+    public void addPassiveSkill(PassiveSkill skill) {
+        passiveSkills.add(skill);
+    }
+
+    public void removePassiveSkill(PassiveSkill skill) {
+        passiveSkills.remove(skill);
+    }
+
+    public void dispatchEvent(GameEvent event) {
+        for (PassiveSkill skill : passiveSkills) {
+            skill.onEvent(event);
+        }
+    }
 
     public abstract void attack(Character target);
 
@@ -19,6 +34,10 @@ public abstract class Character {
     }
 
     public void takeDamage(int amount) {
+        takeDamage(amount, null);
+    }
+
+    public void takeDamage(int amount, Character attacker) {
         this.health -= amount;
         if (this.health < 0) {
             this.health = 0;

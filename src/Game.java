@@ -1,12 +1,12 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
     private Player player;
     private ThemeFactory themeFactory;
     private Dungeon dungeon;
-    
+
     // Managers
     private InputManager inputManager;
     private DisplayManager displayManager;
@@ -27,11 +27,11 @@ public class Game {
 
     public void start() {
         System.out.println(ConsoleColors.ANSI_CYAN + "Bienvenue dans le RPG !" + ConsoleColors.ANSI_RESET);
-        
+
         setupTheme();
         setupPlayer();
         setupDungeon();
-        
+
         System.out.println();
         System.out.println(ConsoleColors.ANSI_PURPLE + "Le jeu commence !" + ConsoleColors.ANSI_RESET);
         gameLoop();
@@ -43,9 +43,9 @@ public class Game {
         System.out.println("1. Médiéval");
         System.out.println("2. Futuriste");
         System.out.println("3. Horreur fantastique");
-        
+
         int themeChoice = inputManager.getInput(1, 3);
-        
+
         switch (themeChoice) {
             case 1:
                 themeFactory = new MedievalThemeFactory();
@@ -66,9 +66,9 @@ public class Game {
         System.out.println("2. Archer (Dextérité élevée)");
         System.out.println("3. Assassin (Dextérité/Critique)");
         System.out.println("4. Sorcier (Intelligence élevée)");
-        
+
         int classChoice = inputManager.getInput(1, 4);
-        
+
         System.out.println();
         System.out.println("Entrez le nom de votre héros :");
         String name = inputManager.getString();
@@ -101,7 +101,7 @@ public class Game {
             displayManager.displayMainMenu();
             int choice = inputManager.getInput(1, 4);
             System.out.println("");
-            
+
             switch (choice) {
                 case 1: // Entrer dans le donjon
                     enterDungeon();
@@ -121,7 +121,7 @@ public class Game {
 
     private void enterDungeon() {
         System.out.println("Vous entrez dans le donjon...");
-        
+
         for (Room room : dungeon.getRooms()) {
             if (!processRoom(room)) {
                 displayManager.displayGameOver();
@@ -135,10 +135,10 @@ public class Game {
     private void processFinalBoss() {
         NPC boss = dungeon.getBoss();
         displayManager.displayBossAnnouncement(boss.getName());
-        
+
         List<NPC> bossList = new ArrayList<>();
         bossList.add(boss);
-        
+
         if (processCombat(bossList, new ArrayList<>(), true)) {
             displayManager.displayVictory();
         } else {
@@ -149,10 +149,10 @@ public class Game {
 
     private boolean processRoom(Room room) {
         displayManager.displayRoomHeader(room.getRoomNumber());
-        
+
         List<NPC> enemies = room.getEnemies();
         List<Item> items = room.getItems();
-        
+
         displayManager.displayEnemies(enemies);
         displayManager.displayItems(items);
 
@@ -165,25 +165,31 @@ public class Game {
     }
 
     private boolean processCombat(List<NPC> enemies, List<Item> items, boolean isBoss) {
+        // Emit START_COMBAT
+        player.dispatchEvent(new GameEvent(EventType.START_COMBAT, player, new java.util.HashMap<>()));
+
         while (!enemies.isEmpty() && player.getHealth() > 0) {
             if (isBoss) {
                 displayManager.displayBossStatus(enemies.get(0), player);
             } else {
                 displayManager.displayRoomMap(enemies, items);
             }
-            
+
             displayManager.displayCombatMenu(isBoss);
-            
+
             int maxOption = isBoss ? 3 : 4;
             int action = inputManager.getInput(1, maxOption);
             System.out.println("");
-            
+
             if (!handleCombatAction(action, enemies, items, isBoss)) {
                 return false; // Le joueur est mort
             }
-            
+
             player.startTurn();
         }
+
+        // Emit END_COMBAT
+        player.dispatchEvent(new GameEvent(EventType.END_COMBAT, player, new java.util.HashMap<>()));
 
         return true;
     }
@@ -211,7 +217,7 @@ public class Game {
                 }
                 break;
         }
-        
+
         return player.getHealth() > 0;
     }
 

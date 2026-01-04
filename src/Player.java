@@ -8,7 +8,14 @@ public abstract class Player extends Character {
     public void attack(Character target) {
         if (attackStrategy != null) {
             int damage = attackStrategy.calculateDamage(this, target);
-            target.takeDamage(damage);
+
+            // Emit DEAL_DAMAGE
+            java.util.Map<String, Object> data = new java.util.HashMap<>();
+            data.put("damage", damage);
+            data.put("target", target);
+            this.dispatchEvent(new GameEvent(EventType.DEAL_DAMAGE, this, data));
+
+            target.takeDamage(damage, this);
         } else {
             System.out.println(this.name + "Pas de strategie d'attaque !");
         }
@@ -29,14 +36,19 @@ public abstract class Player extends Character {
 
         equippedItems.put(item.getSlot(), item);
         applyEquipmentStats(item, true);
-        System.out.println("Equipped " + item.getName());
+        System.out.println("Equipé " + item.getName());
+
+        // Emit CHANGE_WEAPON
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("item", item);
+        this.dispatchEvent(new GameEvent(EventType.CHANGE_WEAPON, this, data));
     }
 
     public void unequipItem(Equipment item) {
         if (equippedItems.get(item.getSlot()) == item) {
             equippedItems.remove(item.getSlot());
             applyEquipmentStats(item, false);
-            System.out.println("Unequipped " + item.getName());
+            System.out.println("Déséquipé " + item.getName());
         }
     }
 
@@ -49,9 +61,18 @@ public abstract class Player extends Character {
     }
 
     @Override
-    public void takeDamage(int amount) {
+    public void takeDamage(int amount, Character attacker) {
         int reduction = (this.dexterity + this.constitution) / 4;
         int damageTaken = Math.max(1, amount - reduction);
+
+        // Emit TAKE_DAMAGE and allow modification
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("damage", damageTaken);
+        data.put("attacker", attacker);
+        this.dispatchEvent(new GameEvent(EventType.TAKE_DAMAGE, this, data));
+
+        damageTaken = (int) data.get("damage");
+
         this.health -= damageTaken;
         if (this.health < 0) {
             this.health = 0;
@@ -64,6 +85,11 @@ public abstract class Player extends Character {
         inventory.remove(item);
         System.out.println("");
         System.out.println(item.getName() + " consommé !");
+
+        // Emit USE_ITEM
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("item", item);
+        this.dispatchEvent(new GameEvent(EventType.USE_ITEM, this, data));
     }
 
     public void addEffect(Effect effect) {
@@ -88,5 +114,8 @@ public abstract class Player extends Character {
                 it.remove();
             }
         }
+
+        // Emit START_TURN
+        this.dispatchEvent(new GameEvent(EventType.START_TURN, this, new java.util.HashMap<>()));
     }
 }

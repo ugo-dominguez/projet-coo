@@ -4,7 +4,7 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
     public NPC createRandomEnemy() {
         int roll = Dice.randomInt(1, 100);
         NPC npc;
-        
+
         if (roll <= 30) {
             npc = new NPC("Fantôme", 80, 10, 8, 15, 5, "Coup de peur");
             npc.attackStrategy = new MagicalAttack();
@@ -21,7 +21,7 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
             npc = new NPC("Lucastein", 30, 15, 12, 8, 4, "Queue de fer");
             npc.attackStrategy = new CriticalAttack();
         }
-        
+
         return npc;
     }
 
@@ -56,10 +56,9 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
     @Override
     public LegendaryItem createLegendaryItem() {
         return new LegendaryItem(
-            "Talisman Maudit",
-            "Chasseur de Vampires",
-            new PhysicalAttack(),
-            "Ce talisman ancien pulse d'une énergie sombre et te lie aux forces occultes.\nTu deviens un Chasseur de Vampires en plus de ta classe actuelle."
-        );
+                "Talisman Maudit",
+                "Chasseur de Vampires",
+                new PhysicalAttack(),
+                "Ce talisman ancien pulse d'une énergie sombre et te lie aux forces occultes.\nTu deviens un Chasseur de Vampires en plus de ta classe actuelle.");
     }
 }

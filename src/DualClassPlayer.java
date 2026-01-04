@@ -49,7 +49,7 @@ public class DualClassPlayer extends Player {
             int damage = attackStrategy.calculateDamage(this, target);
             String attackType = usingSecondClass ? secondClassName : getBaseClassName();
             System.out.println(this.name + " utilise l'attaque de " + attackType + " !");
-            target.takeDamage(damage);
+            target.takeDamage(damage, this);
         } else {
             System.out.println(this.name + " n'a pas de stratégie d'attaque !");
         }
