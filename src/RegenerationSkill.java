@@ -13,7 +13,8 @@ public class RegenerationSkill implements PassiveSkill {
             Character character = event.getActor();
             int amount = (int) Math.max(1, character.getMaxHealth() * REGEN_PERCENT);
             character.heal(amount);
-            System.out.println(character.getName() + " récupère " + amount + " PV grâce à Régénération.");
+            System.out.println("\n" + ConsoleColors.ANSI_GREEN + character.getName() + " récupère " + amount
+                    + " PV grâce à Régénération." + ConsoleColors.ANSI_RESET);
         }
     }
 }

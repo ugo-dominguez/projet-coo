@@ -8,11 +8,7 @@ public class Consumable extends Item {
 
     public void use(Player player) {
         if (effect != null) {
-            if (effect.getDuration() == 0) {
-                effect.apply(player);
-            } else {
-                player.addEffect(effect);
-            }
+            player.addObserver(effect);
         }
     }
 

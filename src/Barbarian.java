@@ -9,6 +9,6 @@ public class Barbarian extends Player {
         this.constitution = 12;
         this.intelligence = 2;
         this.attackStrategy = new PhysicalAttack();
-        this.addPassiveSkill(new ToughSkinSkill());
+        this.addObserver(new ToughSkinSkill());
     }
 }

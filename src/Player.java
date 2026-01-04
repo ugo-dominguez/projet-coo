@@ -2,8 +2,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Player extends Character {
-    protected List<Item> inventory;
-    protected Map<Effect, Integer> effects;
+    protected List<Item> inventory = new java.util.ArrayList<>();
+
+    private Map<EquipmentSlot, Equipment> equippedItems = new java.util.HashMap<>();
 
     public void attack(Character target) {
         if (attackStrategy != null) {
@@ -19,13 +20,6 @@ public abstract class Player extends Character {
         } else {
             System.out.println(this.name + "Pas de strategie d'attaque !");
         }
-    }
-
-    private Map<EquipmentSlot, Equipment> equippedItems = new java.util.HashMap<>();
-
-    {
-        inventory = new java.util.ArrayList<>();
-        effects = new java.util.HashMap<>();
     }
 
     public void equipItem(Equipment item) {
@@ -93,29 +87,26 @@ public abstract class Player extends Character {
     }
 
     public void addEffect(Effect effect) {
-        effects.put(effect, effect.getDuration());
-        effect.apply(this);
+        addObserver(effect);
     }
 
     public void startTurn() {
-        java.util.Iterator<Map.Entry<Effect, Integer>> it = effects.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Effect, Integer> entry = it.next();
-            Effect effect = entry.getKey();
+        // Dispatch START_TURN event
+        this.dispatchEvent(new GameEvent(EventType.START_TURN, this, new java.util.HashMap<>()));
 
-            if (effect instanceof HealthEffect) {
-                effect.apply(this);
-            }
+        // Handle duration updates and expiration
+        // Using a copy to avoid concurrent modification issues during iteration
+        for (GameObserver observer : new java.util.ArrayList<>(observers)) {
+            if (observer instanceof Timed) {
+                Timed timed = (Timed) observer;
+                if (timed.getDuration() != -1) {
+                    timed.decreaseDuration();
 
-            effect.decreaseDuration();
-            entry.setValue(effect.getDuration());
-
-            if (effect.getDuration() <= 0) {
-                it.remove();
+                    if (timed.isExpired()) {
+                        removeObserver(observer);
+                    }
+                }
             }
         }
-
-        // Emit START_TURN
-        this.dispatchEvent(new GameEvent(EventType.START_TURN, this, new java.util.HashMap<>()));
     }
 }

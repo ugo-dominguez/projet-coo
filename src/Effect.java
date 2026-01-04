@@ -1,6 +1,3 @@
 
-public interface Effect {
-    void apply(Player player);
-    int getDuration();
-    void decreaseDuration();
+public interface Effect extends GameObserver, Timed {
 }

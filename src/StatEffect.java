@@ -10,19 +10,35 @@ public class StatEffect implements Effect {
     }
 
     @Override
-    public void apply(Player player) {
+    public void onEvent(GameEvent event) {
+    }
+
+    @Override
+    public void onAdd(Character character) {
+        applyStats(character, 1);
+    }
+
+    @Override
+    public void onRemove(Character character) {
+        applyStats(character, -1);
+    }
+
+    private void applyStats(Character character, int multiplier) {
+        System.out.println("\n" + ConsoleColors.ANSI_GREEN + character.getName() + "gagne " + amount * multiplier
+                + " de " + statName + " !" + ConsoleColors.ANSI_RESET);
+
         switch (statName.toLowerCase()) {
             case "dexterity":
-                player.increaseDexterity(amount);
+                character.increaseDexterity(amount * multiplier);
                 break;
             case "force":
-                player.increaseForce(amount);
+                character.increaseForce(amount * multiplier);
                 break;
             case "constitution":
-                player.increaseConstitution(amount);
+                character.increaseConstitution(amount * multiplier);
                 break;
             case "intelligence":
-                player.increaseIntelligence(amount);
+                character.increaseIntelligence(amount * multiplier);
                 break;
         }
     }

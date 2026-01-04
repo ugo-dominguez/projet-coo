@@ -18,7 +18,7 @@ public class DualClassPlayer extends Player {
         this.intelligence = basePlayer.intelligence;
         this.attackStrategy = basePlayer.attackStrategy;
         this.inventory = basePlayer.inventory;
-        this.effects = basePlayer.effects;
+        this.observers = new java.util.ArrayList<>(basePlayer.observers);
     }
 
     public void switchToSecondClass() {

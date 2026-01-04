@@ -8,19 +8,21 @@ public abstract class Character {
     protected int constitution;
     protected int intelligence;
     protected AttackStrategy attackStrategy;
-    protected java.util.List<PassiveSkill> passiveSkills = new java.util.ArrayList<>();
+    protected java.util.List<GameObserver> observers = new java.util.ArrayList<>();
 
-    public void addPassiveSkill(PassiveSkill skill) {
-        passiveSkills.add(skill);
+    public void addObserver(GameObserver observer) {
+        observers.add(observer);
+        observer.onAdd(this);
     }
 
-    public void removePassiveSkill(PassiveSkill skill) {
-        passiveSkills.remove(skill);
+    public void removeObserver(GameObserver observer) {
+        observers.remove(observer);
+        observer.onRemove(this);
     }
 
     public void dispatchEvent(GameEvent event) {
-        for (PassiveSkill skill : passiveSkills) {
-            skill.onEvent(event);
+        for (GameObserver observer : new java.util.ArrayList<>(observers)) {
+            observer.onEvent(event);
         }
     }
 
