@@ -17,8 +17,8 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         this.inputManager = new InputManager(scanner);
         this.displayManager = new DisplayManager();
-        this.fightManager = new FightManager(scanner);
-        this.inventoryManager = new InventoryManager(scanner, displayManager);
+        this.fightManager = new FightManager(inputManager);
+        this.inventoryManager = new InventoryManager(inputManager, displayManager);
     }
 
     public void setPlayer(Player newPlayer) {

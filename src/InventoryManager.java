@@ -1,12 +1,11 @@
 import java.util.List;
-import java.util.Scanner;
 
 public class InventoryManager {
-    private Scanner scanner;
+    private InputManager inputManager;
     private DisplayManager displayManager;
 
-    public InventoryManager(Scanner scanner, DisplayManager displayManager) {
-        this.scanner = scanner;
+    public InventoryManager(InputManager inputManager, DisplayManager displayManager) {
+        this.inputManager = inputManager;
         this.displayManager = displayManager;
     }
 
@@ -18,7 +17,7 @@ public class InventoryManager {
         
         displayManager.displayInventory(player);
         
-        int choice = getUserInput(1, player.inventory.size() + 1);
+        int choice = inputManager.getInput(1, player.inventory.size() + 1);
         if (choice <= player.inventory.size()) {
             useItem(player, choice - 1, game);
         }
@@ -54,7 +53,7 @@ public class InventoryManager {
             System.out.println((j + 1) + ". " + items.get(j).getName());
         }
         
-        int itemIdx = getUserInput(1, items.size()) - 1;
+        int itemIdx = inputManager.getInput(1, items.size()) - 1;
         Item item = items.remove(itemIdx);
         player.inventory.add(item);
         System.out.println("Vous ramassez : " + item.getName());
@@ -70,7 +69,7 @@ public class InventoryManager {
         System.out.println("1. Oui");
         System.out.println("2. Non, le garder pour plus tard");
         
-        int equipChoice = getUserInput(1, 2);
+        int equipChoice = inputManager.getInput(1, 2);
         
         if (equipChoice == 1) {
             GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(
@@ -80,18 +79,4 @@ public class InventoryManager {
         }
     }
 
-    private int getUserInput(int min, int max) {
-        while (true) {
-            System.out.print("> ");
-            if (scanner.hasNextInt()) {
-                int input = scanner.nextInt();
-                if (input >= min && input <= max) {
-                    return input;
-                }
-            } else {
-                scanner.next();
-            }
-            System.out.println("Choix invalide.");
-        }
-    }
 }

@@ -1,11 +1,10 @@
 import java.util.List;
-import java.util.Scanner;
 
 public class FightManager {
-    private Scanner scanner;
+    private InputManager inputManager;
 
-    public FightManager(Scanner scanner) {
-        this.scanner = scanner;
+    public FightManager(InputManager inputManager) {
+        this.inputManager = inputManager;
     }
 
     public void selectAttackClass(Player player) {
@@ -15,7 +14,7 @@ public class FightManager {
             System.out.println("1. " + dualPlayer.getBaseClassName());
             System.out.println("2. " + dualPlayer.getSecondClassName());
             
-            int attackChoice = getUserInput(1, 2);
+            int attackChoice = inputManager.getInput(1, 2);
             System.out.println("");
             
             if (attackChoice == 1) {
@@ -34,7 +33,7 @@ public class FightManager {
             System.out.println((j + 1) + ". " + enemies.get(j).getName() + " (PV: " + enemies.get(j).getHealth() + ")");
         }
         
-        int enemyIdx = getUserInput(1, enemies.size()) - 1;
+        int enemyIdx = inputManager.getInput(1, enemies.size()) - 1;
         NPC target = enemies.get(enemyIdx);
 
         GameAction attackCommand = new AttackCommand(player, target);
@@ -58,21 +57,6 @@ public class FightManager {
             if (player.getHealth() <= 0) {
                 break;
             }
-        }
-    }
-
-    private int getUserInput(int min, int max) {
-        while (true) {
-            System.out.print("> ");
-            if (scanner.hasNextInt()) {
-                int input = scanner.nextInt();
-                if (input >= min && input <= max) {
-                    return input;
-                }
-            } else {
-                scanner.next();
-            }
-            System.out.println("Choix invalide.");
         }
     }
 }
