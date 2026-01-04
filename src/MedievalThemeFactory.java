@@ -4,7 +4,7 @@ public class MedievalThemeFactory extends ThemeFactory {
     public NPC createRandomEnemy() {
         int roll = Dice.randomInt(1, 100);
         NPC npc;
-        
+
         if (roll <= 30) {
             npc = new NPC("Chevalier Errant", 120, 15, 8, 12, 5, "Coup d'épée");
             npc.attackStrategy = new PhysicalAttack();
@@ -21,13 +21,13 @@ public class MedievalThemeFactory extends ThemeFactory {
             npc = new NPC("Gobelin", 60, 8, 12, 8, 4, "Coup de dague");
             npc.attackStrategy = new CriticalAttack();
         }
-        
+
         return npc;
     }
 
     @Override
     public Item createRandomItem() {
-        int roll = Dice.randomInt(1, 6);
+        int roll = Dice.randomInt(1, 10);
         switch (roll) {
             case 1:
                 return new Consumable("Potion de soin", 50, 0.5, new HealthEffect(30, 0));
@@ -41,6 +41,14 @@ public class MedievalThemeFactory extends ThemeFactory {
                 return new Consumable("Pain", 10, 0.2, new HealthEffect(20, 0));
             case 6:
                 return new Consumable("Viande séchée", 15, 0.3, new HealthEffect(40, 0));
+            case 7:
+                return new SkillScroll("Parchemin de Peau Dure", 150, 0.5, new ToughSkinSkill(), 3);
+            case 8:
+                return new SkillScroll("Parchemin de Cri de Guerre", 150, 0.5, new WarCrySkill(), 3);
+            case 9:
+                return new SkillScroll("Parchemin de Contre-Attaque", 150, 0.5, new CounterAttackSkill(), 3);
+            case 10:
+                return new SkillScroll("Parchemin de Régénération", 200, 0.5, new RegenerationSkill(), 3);
             default:
                 return null;
         }
@@ -56,10 +64,9 @@ public class MedievalThemeFactory extends ThemeFactory {
     @Override
     public LegendaryItem createLegendaryItem() {
         return new LegendaryItem(
-            "Grimoire Maudit",
-            "Sorcier Maudit",
-            new MagicalAttack(),
-            "Ce grimoire corrompt ton esprit, mais te donne accès à des pouvoirs interdits.\nTu deviens désormais un Sorcier Maudit en plus de ta classe actuelle."
-        );
+                "Grimoire Maudit",
+                "Sorcier Maudit",
+                new MagicalAttack(),
+                "Ce grimoire corrompt ton esprit, mais te donne accès à des pouvoirs interdits.\nTu deviens désormais un Sorcier Maudit en plus de ta classe actuelle.");
     }
 }

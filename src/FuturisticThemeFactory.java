@@ -21,7 +21,7 @@ public class FuturisticThemeFactory extends ThemeFactory {
 
     @Override
     public Item createRandomItem() {
-        int roll = Dice.randomInt(1, 4);
+        int roll = Dice.randomInt(1, 7);
         switch (roll) {
             case 1:
                 return new Consumable("Nano-Kit de soin", 40, 0.5, new HealthEffect(40, 0));
@@ -31,6 +31,12 @@ public class FuturisticThemeFactory extends ThemeFactory {
                 return new Consumable("Stimulant Force", 50, 0.1, new StatEffect("Force", 5, 0));
             case 4:
                 return new Consumable("Bouclier Portatif", 100, 2.0, new StatEffect("Constitution", 5, 3));
+            case 5:
+                return new SkillScroll("Puce d'Adrénaline", 200, 0.1, new AdrenalineSkill(), 3);
+            case 6:
+                return new SkillScroll("Générateur de Bouclier", 250, 2.0, new MagicShieldSkill(), 3);
+            case 7:
+                return new SkillScroll("Nanobots de Régénération", 200, 0.1, new RegenerationSkill(), 3);
             default:
                 return null;
         }
@@ -46,10 +52,9 @@ public class FuturisticThemeFactory extends ThemeFactory {
     @Override
     public LegendaryItem createLegendaryItem() {
         return new LegendaryItem(
-            "Implant Militaire",
-            "Soldat d'Élite",
-            new CriticalAttack(),
-            "Cet implant réécrit tes réflexes et ton instinct de combat.\nTu acquiers les capacités d'un Soldat d'Élite en plus de ta classe actuelle."
-        );
+                "Implant Militaire",
+                "Soldat d'Élite",
+                new CriticalAttack(),
+                "Cet implant réécrit tes réflexes et ton instinct de combat.\nTu acquiers les capacités d'un Soldat d'Élite en plus de ta classe actuelle.");
     }
 }

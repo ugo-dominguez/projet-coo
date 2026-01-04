@@ -27,7 +27,7 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
 
     @Override
     public Item createRandomItem() {
-        int roll = Dice.randomInt(1, 6);
+        int roll = Dice.randomInt(1, 8);
         switch (roll) {
             case 1:
                 return new Consumable("Potion de soin", 50, 0.5, new HealthEffect(30, 0));
@@ -41,6 +41,10 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
                 return new Consumable("Eau bénite", 10, 0.2, new HealthEffect(20, 0));
             case 6:
                 return new Consumable("Croix de dieu", 15, 0.3, new HealthEffect(40, 0));
+            case 7:
+                return new SkillScroll("Pacte de Sang (Régénération)", 180, 0.2, new RegenerationSkill(), 3);
+            case 8:
+                return new SkillScroll("Aura Terrifiante (Adrénaline)", 180, 0.0, new AdrenalineSkill(), 3);
             default:
                 return null;
         }
