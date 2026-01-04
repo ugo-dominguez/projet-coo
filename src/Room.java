@@ -15,15 +15,20 @@ public class Room {
 
     private void generateContent(ThemeFactory factory) {
         // 1 à 4 enemies
-        int enemyCount = Dice.randomInt(1, 4);
+        int enemyCount = Dice.randomInt(1, 3);
         for (int i = 0; i < enemyCount; i++) {
             enemies.add(factory.createRandomEnemy());
         }
 
-        // 0 à 2 items
-        int itemCount = Dice.randomInt(0, 2);
+        // 0 à 2 items normaux
+        int itemCount = Dice.randomInt(0, 3);
         for (int i = 0; i < itemCount; i++) {
             items.add(factory.createRandomItem());
+        }
+
+        // 20% de chance d'avoir un objet légendaire
+        if (Dice.randomInt(1, 100) <= 20) {
+            items.add(factory.createLegendaryItem());
         }
     }
 

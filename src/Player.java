@@ -56,7 +56,7 @@ public abstract class Player extends Character {
         if (this.health < 0) {
             this.health = 0;
         }
-        System.out.println(this.name + " subit " + damageTaken + " dégâts (Réduction: " + reduction + ")");
+        System.out.println(this.name + " encaisse " + reduction + " dégats, mais en subit " + damageTaken);
     }
 
     public void consumeItem(Consumable item) {
