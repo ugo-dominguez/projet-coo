@@ -95,7 +95,6 @@ public abstract class Player extends Character {
         this.dispatchEvent(new GameEvent(EventType.START_TURN, this, new java.util.HashMap<>()));
 
         // Handle duration updates and expiration
-        // Using a copy to avoid concurrent modification issues during iteration
         for (GameObserver observer : new java.util.ArrayList<>(observers)) {
             if (observer instanceof Timed) {
                 Timed timed = (Timed) observer;

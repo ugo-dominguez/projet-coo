@@ -1,5 +1,5 @@
 
-public class AdrenalineSkill implements PassiveSkill {
+public class AdrenalineSkill extends PassiveSkill {
     private static final double BUFF_PERCENT = 0.20;
     private boolean triggered = false;
     private boolean active = false;

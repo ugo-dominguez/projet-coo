@@ -1,9 +1,22 @@
 
-public interface PassiveSkill extends GameObserver, Timed {
-    String getName();
+public abstract class PassiveSkill implements GameObserver, Timed {
+    protected int duration = -1;
+
+    public abstract String getName();
 
     @Override
-    default int getDuration() {
-        return -1; // Infinite by default
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    public void decreaseDuration() {
+        if (duration > 0) {
+            duration--;
+        }
     }
 }

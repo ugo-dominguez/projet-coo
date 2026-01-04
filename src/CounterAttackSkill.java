@@ -1,5 +1,5 @@
 
-public class CounterAttackSkill implements PassiveSkill {
+public class CounterAttackSkill extends PassiveSkill {
     private static final double RETURN_PERCENT = 0.20;
 
     @Override

@@ -1,5 +1,5 @@
 
-public class WarCrySkill implements PassiveSkill {
+public class WarCrySkill extends PassiveSkill {
     private static final double STR_PERCENT = 0.03;
     private static final double CON_PERCENT = 0.10;
 

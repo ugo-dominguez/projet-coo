@@ -1,5 +1,5 @@
 
-public class ToughSkinSkill implements PassiveSkill {
+public class ToughSkinSkill extends PassiveSkill {
     private static final double REDUCTION_PERCENT = 0.10;
 
     @Override

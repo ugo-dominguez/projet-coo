@@ -14,9 +14,9 @@ public class InventoryManager {
             System.out.println("Inventaire vide.");
             return;
         }
-        
+
         displayManager.displayInventory(player);
-        
+
         int choice = inputManager.getInput(1, player.inventory.size() + 1);
         if (choice <= player.inventory.size()) {
             useItem(player, choice - 1, game);
@@ -25,17 +25,20 @@ public class InventoryManager {
 
     private void useItem(Player player, int itemIndex, Game game) {
         Item item = player.inventory.get(itemIndex);
-        
+
         if (item instanceof Consumable) {
             GameAction useItemCommand = new UseItemCommand(player, (Consumable) item);
             useItemCommand.execute();
         } else if (item instanceof Equipment) {
             GameAction equipCommand = new EquipItemCommand(player, (Equipment) item);
             equipCommand.execute();
+        } else if (item instanceof SkillScroll) {
+            SkillScroll scroll = (SkillScroll) item;
+            scroll.use(player);
+            player.inventory.remove(scroll);
         } else if (item instanceof LegendaryItem) {
             GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(
-                player, (LegendaryItem) item, game
-            );
+                    player, (LegendaryItem) item, game);
             equipLegendaryCommand.execute();
         } else {
             System.out.println(item.getName() + " ne peut pas être utilisé.");
@@ -47,17 +50,17 @@ public class InventoryManager {
             System.out.println("Rien à ramasser.");
             return;
         }
-        
+
         System.out.println("Ramasser quoi ?");
         for (int j = 0; j < items.size(); j++) {
             System.out.println((j + 1) + ". " + items.get(j).getName());
         }
-        
+
         int itemIdx = inputManager.getInput(1, items.size()) - 1;
         Item item = items.remove(itemIdx);
         player.inventory.add(item);
         System.out.println("Vous ramassez : " + item.getName());
-        
+
         if (item instanceof LegendaryItem) {
             offerLegendaryEquip(player, (LegendaryItem) item, game);
         }
@@ -68,13 +71,12 @@ public class InventoryManager {
         System.out.println("Voulez-vous l'utiliser maintenant ?");
         System.out.println("1. Oui");
         System.out.println("2. Non, le garder pour plus tard");
-        
+
         int equipChoice = inputManager.getInput(1, 2);
-        
+
         if (equipChoice == 1) {
             GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(
-                player, item, game
-            );
+                    player, item, game);
             equipLegendaryCommand.execute();
         }
     }

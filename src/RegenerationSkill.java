@@ -1,5 +1,5 @@
 
-public class RegenerationSkill implements PassiveSkill {
+public class RegenerationSkill extends PassiveSkill {
     private static final double REGEN_PERCENT = 0.05;
 
     @Override

@@ -1,5 +1,5 @@
 
-public class MagicShieldSkill implements PassiveSkill {
+public class MagicShieldSkill extends PassiveSkill {
     private boolean active = true;
 
     @Override
