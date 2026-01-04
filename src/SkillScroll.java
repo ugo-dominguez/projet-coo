@@ -12,8 +12,14 @@ public class SkillScroll extends Item {
     }
 
     public void use(Player player) {
-        player.addObserver(skill);
-        System.out.println(player.getName() + " apprend la compétence " + skill.getName() + " !");
+        if (skill.isAllowed(player)) {
+            player.addObserver(skill);
+            System.out.println(player.getName() + " apprend la compétence " + skill.getName() + " !");
+        } else {
+            System.out.println(ConsoleColors.ANSI_RED + "Vous ne pouvez pas utiliser " + this.name
+                    + " avec votre classe, celui-ci est détruit."
+                    + ConsoleColors.ANSI_RESET);
+        }
     }
 
     public PassiveSkill getSkill() {

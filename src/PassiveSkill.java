@@ -4,6 +4,8 @@ public abstract class PassiveSkill implements GameObserver, Timed {
 
     public abstract String getName();
 
+    public abstract boolean isAllowed(Player player);
+
     @Override
     public int getDuration() {
         return duration;

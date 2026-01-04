@@ -8,6 +8,11 @@ public class ToughSkinSkill extends PassiveSkill {
     }
 
     @Override
+    public boolean isAllowed(Player player) {
+        return player instanceof Barbarian || player instanceof Archer;
+    }
+
+    @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.TAKE_DAMAGE) {
             int currentDamage = (int) event.getData().get("damage");

@@ -11,6 +11,11 @@ public class AdrenalineSkill extends PassiveSkill {
     }
 
     @Override
+    public boolean isAllowed(Player player) {
+        return player instanceof Assassin || player instanceof Archer;
+    }
+
+    @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.DEAL_DAMAGE) {
             triggered = true;

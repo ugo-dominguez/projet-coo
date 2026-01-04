@@ -8,6 +8,11 @@ public class MagicShieldSkill extends PassiveSkill {
     }
 
     @Override
+    public boolean isAllowed(Player player) {
+        return player instanceof Wizard;
+    }
+
+    @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.START_COMBAT || event.getType() == EventType.END_COMBAT) {
             active = true;

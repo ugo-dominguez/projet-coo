@@ -8,6 +8,11 @@ public class CounterAttackSkill extends PassiveSkill {
     }
 
     @Override
+    public boolean isAllowed(Player player) {
+        return player instanceof Barbarian || player instanceof Assassin;
+    }
+
+    @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.TAKE_DAMAGE) {
             Character attacker = (Character) event.getData().get("attacker");

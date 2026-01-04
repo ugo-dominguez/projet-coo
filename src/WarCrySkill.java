@@ -13,6 +13,11 @@ public class WarCrySkill extends PassiveSkill {
     }
 
     @Override
+    public boolean isAllowed(Player player) {
+        return player instanceof Barbarian;
+    }
+
+    @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.START_COMBAT) {
             if (!active) {

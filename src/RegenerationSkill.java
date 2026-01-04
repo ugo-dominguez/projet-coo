@@ -8,6 +8,11 @@ public class RegenerationSkill extends PassiveSkill {
     }
 
     @Override
+    public boolean isAllowed(Player player) {
+        return true;
+    }
+
+    @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.START_TURN) {
             Character character = event.getActor();
