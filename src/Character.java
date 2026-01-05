@@ -26,6 +26,15 @@ public abstract class Character {
         }
     }
 
+    public <T extends GameObserver> T getSkill(Class<T> skillClass) {
+        for (GameObserver observer : observers) {
+            if (skillClass.isInstance(observer)) {
+                return skillClass.cast(observer);
+            }
+        }
+        return null;
+    }
+
     public abstract void attack(Character target);
 
     public void heal(int amount) {
