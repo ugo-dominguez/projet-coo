@@ -29,6 +29,7 @@ public abstract class Player extends Character {
         Equipment current = equippedItems.get(item.getSlot());
         if (current != null) {
             unequipItem(current);
+            return;
         }
 
         equippedItems.put(item.getSlot(), item);

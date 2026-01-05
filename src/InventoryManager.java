@@ -37,8 +37,7 @@ public class InventoryManager {
             scroll.use(player);
             player.inventory.remove(scroll);
         } else if (item instanceof LegendaryItem) {
-            GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(
-                    player, (LegendaryItem) item, game);
+            GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(player, (LegendaryItem) item, game);
             equipLegendaryCommand.execute();
         } else {
             System.out.println(item.getName() + " ne peut pas être utilisé.");
