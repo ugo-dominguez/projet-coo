@@ -10,8 +10,7 @@ public class HealthEffect implements Effect {
     @Override
     public void onEvent(GameEvent event) {
         if (event.getType() == EventType.START_TURN && event.getActor() instanceof Character) {
-            System.out.println("\n" + ConsoleColors.ANSI_GREEN + event.getActor().getName() + " a récupéré " + amount
-                    + " points de vie !" + ConsoleColors.ANSI_RESET);
+            System.out.println("\n" + ConsoleColors.ANSI_GREEN + event.getActor().getName() + " a récupéré " + amount + " points de vie !" + ConsoleColors.ANSI_RESET);
             event.getActor().heal(amount);
         }
     }

@@ -165,7 +165,6 @@ public class Game {
     }
 
     private boolean processCombat(List<NPC> enemies, List<Item> items, boolean isBoss) {
-        // Emit START_COMBAT
         player.dispatchEvent(new GameEvent(EventType.START_COMBAT, player, new java.util.HashMap<>()));
 
         while (!enemies.isEmpty() && player.getHealth() > 0) {
@@ -188,7 +187,6 @@ public class Game {
             player.startTurn();
         }
 
-        // Emit END_COMBAT
         player.dispatchEvent(new GameEvent(EventType.END_COMBAT, player, new java.util.HashMap<>()));
 
         return true;

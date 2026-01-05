@@ -24,14 +24,12 @@ public class AdrenalineSkill extends PassiveSkill {
         } else if (event.getType() == EventType.START_TURN) {
             Character actor = event.getActor();
 
-            // Remove previous buff
             if (active) {
                 actor.decreaseForce(buffAmount);
                 active = false;
                 buffAmount = 0;
             }
 
-            // Apply new buff
             if (triggered) {
                 buffAmount = (int) (actor.getForce() * BUFF_PERCENT);
                 actor.increaseForce(buffAmount);

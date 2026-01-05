@@ -18,7 +18,6 @@ public class NPC extends Character {
             int rawDamage = attackStrategy.calculateDamage(this, target);
             System.out.println(this.name + " utilise " + specialAttackName + " sur " + target.getName() + " !");
 
-            // Emit DEAL_DAMAGE
             java.util.Map<String, Object> data = new java.util.HashMap<>();
             data.put("damage", rawDamage);
             data.put("target", target);
@@ -37,7 +36,6 @@ public class NPC extends Character {
         int reduction = this.constitution / 2;
         int damageTaken = Math.max(1, amount - reduction);
 
-        // Emit TAKE_DAMAGE and allow modification
         java.util.Map<String, Object> data = new java.util.HashMap<>();
         data.put("damage", damageTaken);
         data.put("attacker", attacker);

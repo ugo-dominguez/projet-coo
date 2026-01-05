@@ -16,27 +16,22 @@ public class SkillScroll extends Item {
             PassiveSkill existingSkill = player.getSkill(skill.getClass());
 
             if (existingSkill != null) {
-                // Existing skill
-                if (skill.getDuration() == -1
-                        || (existingSkill.getDuration() != -1 && skill.getDuration() > existingSkill.getDuration())) {
+                if (skill.getDuration() == -1 || (existingSkill.getDuration() != -1 && skill.getDuration() > existingSkill.getDuration())) {
                     player.removeObserver(existingSkill);
                     player.addObserver(skill);
                     System.out.println(ConsoleColors.ANSI_GREEN + "Votre compétence " + skill.getName()
                             + " a été améliorée/rafraîchie !" + ConsoleColors.ANSI_RESET);
                 } else {
-                    System.out.println(
-                            ConsoleColors.ANSI_YELLOW + "Vous possédez déjà une version égale ou supérieure de "
-                                    + skill.getName() + ". Le parchemin est détruit." + ConsoleColors.ANSI_RESET);
+                    System.out.println(ConsoleColors.ANSI_YELLOW + "Vous possédez déjà une version égale ou supérieure de "
+                            + skill.getName() + ". Le parchemin est détruit." + ConsoleColors.ANSI_RESET);
                 }
             } else {
-                // New skill
                 player.addObserver(skill);
                 System.out.println(player.getName() + " apprend la compétence " + skill.getName() + " !");
             }
         } else {
             System.out.println(ConsoleColors.ANSI_RED + "Vous ne pouvez pas utiliser " + this.name
-                    + " avec votre classe, celui-ci est détruit."
-                    + ConsoleColors.ANSI_RESET);
+                    + " avec votre classe, celui-ci est détruit." + ConsoleColors.ANSI_RESET);
         }
     }
 

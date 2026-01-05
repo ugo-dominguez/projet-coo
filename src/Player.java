@@ -10,7 +10,6 @@ public abstract class Player extends Character {
         if (attackStrategy != null) {
             int damage = attackStrategy.calculateDamage(this, target);
 
-            // Emit DEAL_DAMAGE
             java.util.Map<String, Object> data = new java.util.HashMap<>();
             data.put("damage", damage);
             data.put("target", target);
@@ -32,7 +31,6 @@ public abstract class Player extends Character {
         applyEquipmentStats(item, true);
         System.out.println("Equipé " + item.getName());
 
-        // Emit CHANGE_WEAPON
         java.util.Map<String, Object> data = new java.util.HashMap<>();
         data.put("item", item);
         this.dispatchEvent(new GameEvent(EventType.CHANGE_WEAPON, this, data));
@@ -59,7 +57,6 @@ public abstract class Player extends Character {
         int reduction = (this.dexterity + this.constitution) / 4;
         int damageTaken = Math.max(1, amount - reduction);
 
-        // Emit TAKE_DAMAGE and allow modification
         java.util.Map<String, Object> data = new java.util.HashMap<>();
         data.put("damage", damageTaken);
         data.put("attacker", attacker);
@@ -80,7 +77,6 @@ public abstract class Player extends Character {
         System.out.println("");
         System.out.println(item.getName() + " consommé !");
 
-        // Emit USE_ITEM
         java.util.Map<String, Object> data = new java.util.HashMap<>();
         data.put("item", item);
         this.dispatchEvent(new GameEvent(EventType.USE_ITEM, this, data));
@@ -91,10 +87,8 @@ public abstract class Player extends Character {
     }
 
     public void startTurn() {
-        // Dispatch START_TURN event
         this.dispatchEvent(new GameEvent(EventType.START_TURN, this, new java.util.HashMap<>()));
 
-        // Handle duration updates and expiration
         for (GameObserver observer : new java.util.ArrayList<>(observers)) {
             if (observer instanceof Timed) {
                 Timed timed = (Timed) observer;

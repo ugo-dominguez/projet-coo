@@ -75,8 +75,7 @@ public class InventoryManager {
         int equipChoice = inputManager.getInput(1, 2);
 
         if (equipChoice == 1) {
-            GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(
-                    player, item, game);
+            GameAction equipLegendaryCommand = new EquipLegendaryItemCommand(player, item, game);
             equipLegendaryCommand.execute();
         }
     }
