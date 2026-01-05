@@ -27,7 +27,62 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
 
     @Override
     public Item createRandomItem() {
-        int roll = Dice.randomInt(1, 8);
+        int roll = Dice.randomInt(1, 100);
+        
+        // 30% armes/armures, 40% consommables, 30% parchemins
+        if (roll <= 15) {
+            return createRandomWeapon();
+        } else if (roll <= 30) {
+            return createRandomArmor();
+        } else if (roll <= 70) {
+            return createRandomConsumable();
+        } else {
+            return createRandomSkillScroll();
+        }
+    }
+
+    private Item createRandomWeapon() {
+        int roll = Dice.randomInt(1, 4);
+        switch (roll) {
+            case 1:
+                return new Weapon("Pieu en Argent", 70, 1.0, 6, 2, 0, 0, 
+                    new PhysicalAttack(), "Physique");
+            case 2:
+                return new Weapon("Arbalète Sacrée", 85, 3.0, 0, 9, 0, 0, 
+                    new RangedAttack(), "Distance");
+            case 3:
+                return new Weapon("Crucifix Béni", 80, 0.5, 0, 0, 0, 10, 
+                    new MagicalAttack(), "Magique");
+            case 4:
+                return new Weapon("Lame Maudite", 90, 2.0, 4, 6, 0, 0, 
+                    new CriticalAttack(), "Critique");
+            default:
+                return null;
+        }
+    }
+
+    private Item createRandomArmor() {
+        int roll = Dice.randomInt(1, 4);
+        switch (roll) {
+            case 1:
+                return new Equipment("Cape de Vampire", 110, 2.0, 
+                    EquipmentSlot.CHESTPLATE, 0, 8, 3, 0);
+            case 2:
+                return new Equipment("Masque Rituel", 90, 1.0, 
+                    EquipmentSlot.HELMET, 0, 0, 2, 7);
+            case 3:
+                return new Equipment("Bottes Spectrales", 60, 0.5, 
+                    EquipmentSlot.BOOTS, 0, 5, 0, 3);
+            case 4:
+                return new Equipment("Armure Maudite", 120, 18.0, 
+                    EquipmentSlot.LEGGINGS, 3, -1, 9, 0);
+            default:
+                return null;
+        }
+    }
+
+    private Item createRandomConsumable() {
+        int roll = Dice.randomInt(1, 6);
         switch (roll) {
             case 1:
                 return new Consumable("Potion de soin", 50, 0.5, new HealthEffect(30, 0));
@@ -41,9 +96,17 @@ public class HorrorFantasticThemeFactory extends ThemeFactory {
                 return new Consumable("Eau bénite", 10, 0.2, new HealthEffect(20, 0));
             case 6:
                 return new Consumable("Croix de dieu", 15, 0.3, new HealthEffect(40, 0));
-            case 7:
+            default:
+                return null;
+        }
+    }
+
+    private Item createRandomSkillScroll() {
+        int roll = Dice.randomInt(1, 2);
+        switch (roll) {
+            case 1:
                 return new SkillScroll("Pacte de Sang (Régénération)", 180, 0.2, new RegenerationSkill(), 3);
-            case 8:
+            case 2:
                 return new SkillScroll("Aura Terrifiante (Adrénaline)", 180, 0.0, new AdrenalineSkill(), 3);
             default:
                 return null;

@@ -27,7 +27,62 @@ public class MedievalThemeFactory extends ThemeFactory {
 
     @Override
     public Item createRandomItem() {
-        int roll = Dice.randomInt(1, 10);
+        int roll = Dice.randomInt(1, 100);
+        
+        // 40% armes/armures, 40% consommables, 20% parchemins
+        if (roll <= 15) {
+            return createRandomWeapon();
+        } else if (roll <= 30) {
+            return createRandomArmor();
+        } else if (roll <= 70) {
+            return createRandomConsumable();
+        } else {
+            return createRandomSkillScroll();
+        }
+    }
+
+    private Item createRandomWeapon() {
+        int roll = Dice.randomInt(1, 4);
+        switch (roll) {
+            case 1:
+                return new Weapon("Épée en fer", 80, 3.0, 5, 0, 0, 0, 
+                    new PhysicalAttack(), "Physique");
+            case 2:
+                return new Weapon("Arc long", 75, 1.5, 0, 8, 0, 0, 
+                    new RangedAttack(), "Distance");
+            case 3:
+                return new Weapon("Dague empoisonnée", 90, 0.5, 3, 5, 0, 0, 
+                    new CriticalAttack(), "Critique");
+            case 4:
+                return new Weapon("Bâton de mage", 85, 2.0, 0, 0, 0, 8, 
+                    new MagicalAttack(), "Magique");
+            default:
+                return null;
+        }
+    }
+
+    private Item createRandomArmor() {
+        int roll = Dice.randomInt(1, 4);
+        switch (roll) {
+            case 1:
+                return new Equipment("Armure de plates", 100, 15.0, 
+                    EquipmentSlot.CHESTPLATE, 0, -2, 10, 0);
+            case 2:
+                return new Equipment("Casque runique", 60, 2.0, 
+                    EquipmentSlot.HELMET, 0, 0, 3, 5);
+            case 3:
+                return new Equipment("Bottes de cuir", 40, 1.0, 
+                    EquipmentSlot.BOOTS, 0, 4, 2, 0);
+            case 4:
+                return new Equipment("Jambières renforcées", 70, 5.0, 
+                    EquipmentSlot.LEGGINGS, 2, 0, 6, 0);
+            default:
+                return null;
+        }
+    }
+
+    private Item createRandomConsumable() {
+        int roll = Dice.randomInt(1, 6);
         switch (roll) {
             case 1:
                 return new Consumable("Potion de soin", 50, 0.5, new HealthEffect(30, 0));
@@ -41,13 +96,21 @@ public class MedievalThemeFactory extends ThemeFactory {
                 return new Consumable("Pain", 10, 0.2, new HealthEffect(20, 0));
             case 6:
                 return new Consumable("Viande séchée", 15, 0.3, new HealthEffect(40, 0));
-            case 7:
+            default:
+                return null;
+        }
+    }
+
+    private Item createRandomSkillScroll() {
+        int roll = Dice.randomInt(1, 4);
+        switch (roll) {
+            case 1:
                 return new SkillScroll("Parchemin de Peau Dure", 150, 0.5, new ToughSkinSkill(), 3);
-            case 8:
+            case 2:
                 return new SkillScroll("Parchemin de Cri de Guerre", 150, 0.5, new WarCrySkill(), 3);
-            case 9:
+            case 3:
                 return new SkillScroll("Parchemin de Contre-Attaque", 150, 0.5, new CounterAttackSkill(), 3);
-            case 10:
+            case 4:
                 return new SkillScroll("Parchemin de Régénération", 200, 0.5, new RegenerationSkill(), 3);
             default:
                 return null;

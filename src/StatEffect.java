@@ -24,7 +24,7 @@ public class StatEffect implements Effect {
     }
 
     private void applyStats(Character character, int multiplier) {
-        System.out.println("\n" + ConsoleColors.ANSI_GREEN + character.getName() + "gagne " + amount * multiplier
+        System.out.println("\n" + ConsoleColors.ANSI_GREEN + character.getName() + " gagne " + amount * multiplier
                 + " de " + statName + " !" + ConsoleColors.ANSI_RESET);
 
         switch (statName.toLowerCase()) {

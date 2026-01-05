@@ -9,5 +9,6 @@ public class Assassin extends Player {
         this.constitution = 6;
         this.intelligence = 8;
         this.attackStrategy = new CriticalAttack();
+        this.initializeBaseStrategy();
     }
 }

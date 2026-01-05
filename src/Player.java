@@ -3,8 +3,12 @@ import java.util.Map;
 
 public abstract class Player extends Character {
     protected List<Item> inventory = new java.util.ArrayList<>();
-
     private Map<EquipmentSlot, Equipment> equippedItems = new java.util.HashMap<>();
+    private AttackStrategy baseAttackStrategy;
+
+    protected void initializeBaseStrategy() {
+        this.baseAttackStrategy = this.attackStrategy;
+    }
 
     public void attack(Character target) {
         if (attackStrategy != null) {
@@ -17,7 +21,7 @@ public abstract class Player extends Character {
 
             target.takeDamage(damage, this);
         } else {
-            System.out.println(this.name + "Pas de strategie d'attaque !");
+            System.out.println(this.name + " pas de stratégie d'attaque !");
         }
     }
 
@@ -29,7 +33,14 @@ public abstract class Player extends Character {
 
         equippedItems.put(item.getSlot(), item);
         applyEquipmentStats(item, true);
-        System.out.println("Equipé " + item.getName());
+        
+        if (item instanceof Weapon) {
+            Weapon weapon = (Weapon) item;
+            this.attackStrategy = weapon.getAttackStrategy();
+            System.out.println(ConsoleColors.ANSI_GREEN + "Équipé " + item.getName() + " (" + weapon.getAttackType() + ")" + ConsoleColors.ANSI_RESET);
+        } else {
+            System.out.println(ConsoleColors.ANSI_GREEN + "Équipé " + item.getName() + ConsoleColors.ANSI_RESET);
+        }
 
         java.util.Map<String, Object> data = new java.util.HashMap<>();
         data.put("item", item);
@@ -40,7 +51,13 @@ public abstract class Player extends Character {
         if (equippedItems.get(item.getSlot()) == item) {
             equippedItems.remove(item.getSlot());
             applyEquipmentStats(item, false);
-            System.out.println("Déséquipé " + item.getName());
+            
+            if (item instanceof Weapon && item.getSlot() == EquipmentSlot.WEAPON) {
+                this.attackStrategy = baseAttackStrategy;
+                System.out.println(ConsoleColors.ANSI_YELLOW + "Déséquipé " + item.getName() + " - Retour à l'attaque de base" + ConsoleColors.ANSI_RESET);
+            } else {
+                System.out.println(ConsoleColors.ANSI_YELLOW + "Déséquipé " + item.getName() + ConsoleColors.ANSI_RESET);
+            }
         }
     }
 
@@ -101,5 +118,18 @@ public abstract class Player extends Character {
                 }
             }
         }
+    }
+
+    public Weapon getEquippedWeapon() {
+        Equipment weapon = equippedItems.get(EquipmentSlot.WEAPON);
+        return weapon instanceof Weapon ? (Weapon) weapon : null;
+    }
+
+    public Map<EquipmentSlot, Equipment> getEquippedItems() { 
+        return equippedItems;
+    }
+
+    public AttackStrategy getBaseAttackStrategy() {
+        return baseAttackStrategy;
     }
 }

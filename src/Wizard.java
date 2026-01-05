@@ -9,5 +9,6 @@ public class Wizard extends Player {
         this.constitution = 6;
         this.intelligence = 25;
         this.attackStrategy = new MagicalAttack();
+        this.initializeBaseStrategy();
     }
 }

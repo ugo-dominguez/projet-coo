@@ -89,12 +89,45 @@ public class DisplayManager {
     }
 
     public void displayPlayerStats(Player player) {
-        System.out.println(ConsoleColors.ANSI_GREEN + "Statistiques de " + player.getName() + ConsoleColors.ANSI_RESET);
-        System.out.println("PV: " + player.getHealth() + "/" + player.getMaxHealth());
-        System.out.println("Force: " + player.getForce());
-        System.out.println("Dextérité: " + player.getDexterity());
-        System.out.println("Constitution: " + player.getConstitution());
-        System.out.println("Intelligence: " + player.getIntelligence());
+        System.out.println(ConsoleColors.ANSI_CYAN + "=== Statistiques de " + player.getName() + " ===" + ConsoleColors.ANSI_RESET);
+        
+        if (player instanceof DualClassPlayer) {
+            DualClassPlayer dcp = (DualClassPlayer) player;
+            System.out.println("   Classe : " + dcp.getBaseClassName() + " / " + dcp.getSecondClassName());
+        }
+    
+        System.out.println(String.format("PV: %d/%d", player.getHealth(), player.getMaxHealth()));
+        System.out.println(String.format("Force: %-10d\nDextérité: %d", player.getForce(), player.getDexterity()));
+        System.out.println(String.format("Constitution: %-10d\nInttelligence: %d", player.getConstitution(), player.getIntelligence()));
+    
+        System.out.println(ConsoleColors.ANSI_YELLOW + "\n--- Equipements ---" + ConsoleColors.ANSI_RESET);
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Equipment item = player.getEquippedItems().get(slot);
+            if (item != null) {
+                String bonus = String.format("(F:%d, D:%d, C:%d, I:%d)", 
+                    item.getForceBonus(), item.getDexterityBonus(), 
+                    item.getConstitutionBonus(), item.getIntelligenceBonus());
+                System.out.println(slot + ": " + item.getName() + " " + bonus);
+            } else {
+                System.out.println(slot + ": Vide");
+            }
+        }
+    
+        System.out.println(ConsoleColors.ANSI_PURPLE + "\n--- Compétences & Effets ---" + ConsoleColors.ANSI_RESET);
+        boolean activeFound = false;
+        for (GameObserver obs : player.getObservers()) {
+            if (obs instanceof PassiveSkill) {
+                PassiveSkill ps = (PassiveSkill) obs;
+                String duration = ps.getDuration() == -1 ? "Permanent" : ps.getDuration() + " tours";
+                System.out.println("[Skill] " + ps.getName() + " (" + duration + ")");
+                activeFound = true;
+            } else if (obs instanceof StatEffect || obs instanceof HealthEffect) {
+                System.out.println("[Effet] " + obs.getClass().getSimpleName() + " actif");
+                activeFound = true;
+            }
+        }
+    
+        if (!activeFound) System.out.println("Aucun bonus actif.");
     }
 
     public void displayInventory(Player player) {

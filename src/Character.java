@@ -1,3 +1,4 @@
+import java.util.List;
 
 public abstract class Character {
     protected String name;
@@ -114,5 +115,9 @@ public abstract class Character {
 
     public String getName() {
         return name;
+    }
+
+    public List<GameObserver> getObservers() {
+        return observers;
     }
 }

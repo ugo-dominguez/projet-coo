@@ -9,5 +9,6 @@ public class Archer extends Player {
         this.constitution = 8;
         this.intelligence = 5;
         this.attackStrategy = new RangedAttack();
+        this.initializeBaseStrategy();
     }
 }
